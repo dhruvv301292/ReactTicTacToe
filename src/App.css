@@ -36,3 +36,37 @@
     transform: rotate(360deg);
   }
 }
+
+.box {
+  text-align: center;
+  float: left;
+  color: black;
+  font-weight: bolder;
+  font-size: 270px;
+  border: 1px black;
+  border-style: solid;
+  height: 300px;
+  width: 300px;
+  background-color: white;
+  margin-right: -1px;
+  margin-top: -1px; 
+}
+
+.box:hover {
+  background-color: black;
+  color: white;
+}
+
+.clearBoard {
+  margin: 20px 0px
+}
+
+.board {
+  margin: 10px 10px
+}
+
+.boardRow:after {
+  clear: both;
+  content: '';
+  display: table;
+}
