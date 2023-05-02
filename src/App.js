@@ -1,6 +1,6 @@
 import './App.css';
 // import Board from "./components/Board";
-import { useEffect, useState, useContext, createContext } from 'react';
+import { useEffect, useState, useContext, createContext, useRef } from 'react';
 
 // why can't I pass turn as useRef and make it work?
 // why won't my useEffect calculate winner?
@@ -10,18 +10,19 @@ const GameContext = createContext()
 function App() {
 
   const [board, setBoard] = useState([["", "", ""], ["", "", ""], ["", "", ""]])
-  const [turn, setTurn] = useState(true)
+  const turn = useRef(true)
   // const result = useRef("Player X's turn")
 
   function resetGame() {
     setBoard([["", "", ""], ["", "", ""], ["", "", ""]])
+    turn.current = true
   }    
 
   return (
-    <GameContext.Provider value={{boardContext: [board, setBoard], turnContext: [turn, setTurn]}}>
+    <GameContext.Provider value={{boardContext: [board, setBoard], turnContext: turn}}>
     <>
     <div className='board'>
-      <Board turn={turn} setTurn={setTurn} setBoard={setBoard} board={board}></Board>      
+      <Board turn={turn} setBoard={setBoard} board={board}></Board>      
     </div>
     <div>
       <button className='clearBoard' onClick={resetGame}>Clear Board</button>
@@ -52,20 +53,21 @@ function Board(props) {
 function Box(props) {
 
   const { boardContext, turnContext } = useContext(GameContext);
-  const [turn, setTurn] = turnContext;
+  const turn = turnContext;
   const [board, setBoard] = boardContext;
 
-  function handleButtonClick() {
+  function handleButtonClick() {    
     setBoard((board) => {
-      board[props.row][props.col] = turn ? "X" : "O"      
-      return board
-    })
-    setTurn((t) => {
-        return !t
-    })        
+      const newBoard = [...board];
+      newBoard[props.row][props.col] = turn.current ? "X" : "O"      
+      return newBoard
+    })     
+       
   }
 
   useEffect(() => {
+    turn.current = !turn.current;
+    console.log("updateing board")
     const checkWinner = () => {
       console.log("checking")
       return checkCols() || checkRows() || checkDiagonals()
@@ -112,6 +114,9 @@ function Box(props) {
       console.log("WINNER")
     }
     // console.log(result.current)
+    return () => {
+      console.log("Closing")
+    }
   }, [board])
 
   return (
