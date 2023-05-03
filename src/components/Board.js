@@ -5,14 +5,12 @@ export default function Board(props) {
     for (var i = 0; i < 3; i++) {
         rows.push(
         <div key={i} className="boardRow">
-            <Box clearBoard={props.clearBoard} turn={props.turn} setTurn={props.setTurn}></Box>
-            <Box clearBoard={props.clearBoard} turn={props.turn} setTurn={props.setTurn}></Box>
-            <Box clearBoard={props.clearBoard} turn={props.turn} setTurn={props.setTurn}></Box>
+            <Box row={i} col={0}></Box>
+            <Box row={i} col={1}></Box>
+            <Box row={i} col={2}></Box>
         </div>
         )
     }
-    
-     
     return (
         <>
         {rows}

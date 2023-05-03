@@ -1,25 +1,24 @@
 import "../App.css"
-import { useState } from 'react'
+import { useContext } from 'react'
+import { GameContext } from '../App.js'
 
 export default function Box(props) {
-    const [tic, setTic] = useState("");
-    function handleButtonClick() {
-        if (props.turn) {
-            setTic("X");
-            props.setTurn((t) => {
-                return !t
-            })
-        } else {
-            setTic("O");
-            props.setTurn((t) => {
-                return !t
-            })
-        }        
-    }
 
+    const { boardContext, turn } = useContext(GameContext);
+    const [board, setBoard] = boardContext;
+  
+    function handleButtonClick() {    
+      setBoard((board) => {
+        const newBoard = [...board];
+        newBoard[props.row][props.col] = turn.current ? "X" : "O"      
+        return newBoard
+      })     
+         
+    }  
+  
     return (
         <>
-        <button onClick={handleButtonClick} className="box">{tic}</button>
+        <button onClick={handleButtonClick} className="box">{board[props.row][props.col]}</button>
         </>
     )
 }
